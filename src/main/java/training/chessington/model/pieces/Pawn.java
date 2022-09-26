@@ -17,36 +17,32 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> listOfMoves = new ArrayList<>();
         if (colour == PlayerColour.WHITE){
-            if (from.getRow() == 6){
-                Coordinates whiteMove2 = new Coordinates(from.getRow() - 2, from.getCol());
-                Move moveAbove = new Move(from, whiteMove2);
+            getAllowedMovesForPlayerColour(from, board, listOfMoves,colour);
+    
+        }else{
+            getAllowedMovesForPlayerColour(from, board, listOfMoves, colour);
+        }
+        return listOfMoves;
 
-                if (board.get(whiteMove2) == null){
-                    listOfMoves.add(moveAbove);
-                }
-            }
+    }
 
-            Coordinates whiteMove1 = new Coordinates(from.getRow() - 1, from.getCol());
-            Move moveAbove = new Move(from, whiteMove1);
-            if (board.get(whiteMove1) == null){
+    public List<Move> getAllowedMovesForPlayerColour(Coordinates from, Board board, List<Move> listOfMoves, PlayerColour playerColour){
+        int rowNumber = playerColour.equals(PlayerColour.BLACK) ? 1 : 6 ;
+        int initialRowMoves = playerColour.equals(PlayerColour.BLACK)? from.getRow() + 2 : from.getRow() - 2;
+        int rowMoves = playerColour.equals(PlayerColour.BLACK) ? from.getRow() + 1 : from.getRow() - 1;
+
+        if (from.getRow() == rowNumber){
+            Coordinates moveTwo = new Coordinates(initialRowMoves, from.getCol());
+            Move moveAbove = new Move(from, moveTwo);
+            if (board.get(moveTwo) == null){
                 listOfMoves.add(moveAbove);
             }
+        }
 
-        }else{
-            if (from.getRow() == 1){
-            Coordinates blackMove2 = new Coordinates(from.getRow() + 2, from.getCol());
-            Move moveBelow = new Move(from, blackMove2);
-                if (board.get(blackMove2) == null){
-                    listOfMoves.add(moveBelow);
-                }
-
-            }
-
-            Coordinates blackMove1 = new Coordinates(from.getRow() + 1, from.getCol());
-            Move moveBelow = new Move(from, blackMove1);
-            if (board.get(blackMove1) == null){
-                listOfMoves.add(moveBelow);
-            }
+        Coordinates moveOne = new Coordinates(rowMoves, from.getCol());
+        Move moveAbove = new Move(from, moveOne);
+        if (board.get(moveOne) == null){
+            listOfMoves.add(moveAbove);
         }
 
         return listOfMoves;
